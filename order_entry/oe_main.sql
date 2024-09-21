@@ -61,6 +61,7 @@ rem   ahunold   03/02/01 - NLS_LANGUAGE
 rem   ahunold   01/09/01 - checkin ADE
 
 SET ECHO OFF
+set serveroutput on size unlimited format wrapped
 
 PROMPT 
 PROMPT specify password for OE as parameter 1:
@@ -127,6 +128,7 @@ REM grants from sys schema
 REM =======================================================
 
 CONNECT sys/&pass_sys@&connect_string AS SYSDBA;  
+set serveroutput on size unlimited format wrapped
 GRANT execute ON sys.dbms_stats TO oe;
 
 REM =======================================================
@@ -134,6 +136,7 @@ REM grants from hr schema
 REM =======================================================
 
 CONNECT hr/&passhr@&connect_string;
+set serveroutput on size unlimited format wrapped
 GRANT REFERENCES, SELECT ON employees TO oe;
 GRANT REFERENCES, SELECT ON countries TO oe;
 GRANT REFERENCES, SELECT ON locations TO oe;
@@ -147,6 +150,7 @@ REM create oe schema (order entry)
 REM =======================================================
 
 CONNECT oe/&pass@&connect_string
+set serveroutput on size unlimited format wrapped
 ALTER SESSION SET NLS_LANGUAGE=American;
 ALTER SESSION SET NLS_TERRITORY=America;
 
@@ -154,37 +158,38 @@ ALTER SESSION SET NLS_TERRITORY=America;
 -- call script to create OE objects
 --
 
-DEFINE vscript = __SUB__CWD__/order_entry/coe_&vrs
+DEFINE vscript = /opt/DMSTEX_dev/db-sample-schemas//order_entry/coe_&vrs
 @&vscript &vrs &pass &pass_sys &connect_string
 
 --
 -- call script to load OE objects
 --
 
-DEFINE vscript = __SUB__CWD__/order_entry/loe_&vrs
+DEFINE vscript = /opt/DMSTEX_dev/db-sample-schemas//order_entry/loe_&vrs
 @&vscript &vrs &data_path &log_path &pass
 
 --
 -- call script for post-load operations on OE
 --
 
-DEFINE vscript = __SUB__CWD__/order_entry/poe_&vrs
+DEFINE vscript = /opt/DMSTEX_dev/db-sample-schemas//order_entry/poe_&vrs
 @&vscript &vrs 
 
 --
 -- OC subschema
 --
 
-@__SUB__CWD__/order_entry/oc_main
+@/opt/DMSTEX_dev/db-sample-schemas//order_entry/oc_main
 
 --
 -- statistics
 --
 
-@__SUB__CWD__/order_entry/oe_analz
+@/opt/DMSTEX_dev/db-sample-schemas//order_entry/oe_analz
 
 -- oe_analz invalidates the coe public synonyms - recreate them
 CONNECT sys/&pass_sys@&connect_string AS SYSDBA;  
+set serveroutput on size unlimited format wrapped
 CREATE OR REPLACE PUBLIC SYNONYM COE_CONFIGURATION FOR COE_CONFIGURATION;
 CREATE OR REPLACE PUBLIC SYNONYM COE_NAMESPACES FOR COE_NAMESPACES;
 CREATE OR REPLACE PUBLIC SYNONYM COE_DOM_HELPER FOR COE_DOM_HELPER;

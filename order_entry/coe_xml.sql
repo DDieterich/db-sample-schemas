@@ -64,6 +64,7 @@ PROMPT
 -- CONNECT as SYS. Add roles AND privileges to OE.
 --
 CONNECT sys/&pass_sys@&connect_string AS SYSDBA;
+set serveroutput on size unlimited format wrapped
 
 GRANT xdbadmin TO oe;
 GRANT create any directory TO oe; 
@@ -71,15 +72,16 @@ GRANT drop any directory TO oe;
 GRANT alter session TO oe;
 
 -- Create stored objects
-   @__SUB__CWD__/order_entry/xdbSupport
+   @/opt/DMSTEX_dev/db-sample-schemas//order_entry/xdbSupport
 
 
 -- Create directory object, instantiated by createUser.sql.sbs
- @__SUB__CWD__/order_entry/createUser &pass_oe &pass_sys &connect_string
+ @/opt/DMSTEX_dev/db-sample-schemas//order_entry/createUser &pass_oe &pass_sys &connect_string
 
 
 
 CONNECT oe/&pass_oe@&connect_string;
+set serveroutput on size unlimited format wrapped
 
 --
 -- set . and , as decimal point and thousand separator for the session
@@ -88,7 +90,7 @@ CONNECT oe/&pass_oe@&connect_string;
 ALTER SESSION SET NLS_NUMERIC_CHARACTERS='.,';
 
 -- Create folders and load
- @__SUB__CWD__/order_entry/xdb03usg
+ @/opt/DMSTEX_dev/db-sample-schemas//order_entry/xdb03usg
 
 
 --
@@ -96,6 +98,7 @@ ALTER SESSION SET NLS_NUMERIC_CHARACTERS='.,';
 --
 
 CONNECT sys/&pass_sys@&connect_string AS SYSDBA;  
+set serveroutput on size unlimited format wrapped
 
 REVOKE create any directory FROM oe;
 REVOKE drop any directory FROM oe;
@@ -111,4 +114,4 @@ DROP VIEW    xdb.database_summary;
 
 
 CONNECT oe/&&pass_oe@&connect_string;
-
+set serveroutput on size unlimited format wrapped

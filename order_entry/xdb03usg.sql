@@ -49,13 +49,13 @@ Rem    cbauwens    03/16/04 - Created
 --
 -- Create Repository Folder Hierarchy
 --
-@__SUB__CWD__/order_entry/createFolders.sql
+@/opt/DMSTEX_dev/db-sample-schemas//order_entry/createFolders.sql
 
 
 --
 -- Load example documents into the XDB repository
 --
-@__SUB__CWD__/order_entry/createResources.sql
+@/opt/DMSTEX_dev/db-sample-schemas//order_entry/createResources.sql
 
 
 --
@@ -92,7 +92,9 @@ END;
 
 -- revoke the grant of execute on the SUBDIR directory 
 CONNECT sys/&&pass_sys@&&connect_string AS SYSDBA;
+set serveroutput on size unlimited format wrapped
  
 revoke execute on directory SUBDIR from OE
 /
 CONNECT OE/&pass_oe@&&connect_string
+set serveroutput on size unlimited format wrapped

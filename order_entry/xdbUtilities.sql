@@ -429,15 +429,15 @@ AS
   result BOOLEAN;
   folderExists NUMBER(6):= 1;
 BEGIN
-  -- DBMS_OUTPUT.put_line('Processing ' || path);
+  DBMS_OUTPUT.put_line('Processing ' || path);
   SELECT count(*)
   INTO folderExists
   FROM RESOURCE_VIEW
   WHERE equals_path(RES, path) = 1;
-  -- DBMS_OUTPUT.put_line('FolderExists = ' || folderExists);
+  DBMS_OUTPUT.put_line('FolderExists = ' || folderExists);
   IF (folderExists = 0) THEN
     parentFolderPath := substr(path, 1, instr(path, pathSeperator, -1) -1);
-    -- DBMS_OUTPUT.put_line('FolderExists = ' || FolderExists);
+    DBMS_OUTPUT.put_line('FolderExists = ' || FolderExists);
     createDirectoryTree(parentFolderPath);
     result := DBMS_XDB.createFolder(path);
   END IF;
@@ -512,7 +512,7 @@ BEGIN
     FROM ALL_DIRECTORIES 
     WHERE DIRECTORY_NAME = upload_directory_name;  
 
-  -- DBMS_OUTPUT.put_line('OS Root =  ' || directory_path);
+  DBMS_OUTPUT.put_line('OS Root =  ' || directory_path);
 
   -- Load the Resources into the XML DB Repository
 
@@ -534,11 +534,11 @@ BEGIN
 
     text_node          := DBMS_XMLDOM.GETFIRSTCHILD(file_node);
     target_file_path   := DBMS_XMLDOM.GETNODEVALUE(text_node);
-    -- DBMS_OUTPUT.put_line('Source =  ' || target_file_path);
+    DBMS_OUTPUT.put_line('Source =  ' || target_file_path);
     target_file_name   := substr(target_file_path, 
                                  instr(target_file_path, pathSeperator, -1) +1);
 
-    -- DBMS_OUTPUT.put_line('File =  ' || target_file_name);
+    DBMS_OUTPUT.put_line('File =  ' || target_file_name);
 
     target_folder_path := substr(target_file_path, 1, 
                                  instr(target_file_path, pathSeperator, -1));
@@ -569,7 +569,7 @@ BEGIN
     
     IF (last_folder_path != target_folder_path) THEN
       subdirectory_path := directory_path || target_folder_path;
-      -- DBMS_OUTPUT.put_line('Directory =  ' || subdirectory_path);
+      DBMS_OUTPUT.put_line('Directory =  ' || subdirectory_path);
       sqlStatement := 
         'CREATE OR REPLACE DIRECTORY subdir AS ''' || subdirectory_path || '''';
       execute immediate sqlStatement;
@@ -580,7 +580,7 @@ BEGIN
                            nls_charset_id(encoding_text));
     resource_path := 
       repository_folder_path || target_folder_path || '/' || target_file_name;
-    -- DBMS_OUTPUT.put_line('Target = ' || resource_path);
+    DBMS_OUTPUT.put_line('Target = ' || resource_path);
     
     IF (replace_option AND DBMS_XDB.existsResource(resource_path)) THEN
       DBMS_XDB.deleteResource(resource_path);
@@ -662,7 +662,7 @@ BEGIN
    rename_statement := 
      'ALTER TABLE ' || USER || '."' || system_generated_name || '" RENAME TO "' ||
      collection_table_name || '"';
-   -- DBMS_OUTPUT.put_line(rename_statement);
+   DBMS_OUTPUT.put_line(rename_statement);
    EXECUTE IMMEDIATE rename_statement;
    
    BEGIN
@@ -676,7 +676,7 @@ BEGIN
      rename_statement := 
        'ALTER INDEX ' || USER || '."' || system_generated_name ||
        '" RENAME TO "' ||collection_table_name || '_DATA"';
-     -- DBMS_OUTPUT.put_line(rename_statement);
+     DBMS_OUTPUT.put_line(rename_statement);
      EXECUTE IMMEDIATE rename_statement;
    EXCEPTION
      WHEN NO_DATA_FOUND THEN
@@ -694,7 +694,7 @@ BEGIN
      rename_statement := 
        'ALTER INDEX ' || USER || '."' || system_generated_name || 
        '" RENAME TO "' || collection_table_name || '_MEMBERS"';
-     -- DBMS_OUTPUT.put_line(rename_statement);
+     DBMS_OUTPUT.put_line(rename_statement);
      EXECUTE IMMEDIATE rename_statement;
    EXCEPTION
      WHEN NO_DATA_FOUND THEN

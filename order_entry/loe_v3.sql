@@ -56,26 +56,26 @@ PROMPT
 PROMPT specify password for oe as parameter 4:
 DEFINE oe_pass  = &4
 PROMPT  
-PROMPT Setting FEEDBACK OFF for inserts
-PROMPT
-SET FEEDBACK OFF
+--PROMPT Setting FEEDBACK OFF for inserts
+--PROMPT
+--SET FEEDBACK OFF
 
-@__SUB__CWD__/order_entry/oe_p_pi
+@/opt/DMSTEX_dev/db-sample-schemas//order_entry/oe_p_pi
 
-@__SUB__CWD__/order_entry/oe_p_pd
+@/opt/DMSTEX_dev/db-sample-schemas//order_entry/oe_p_pd
 
-DEFINE vscript = __SUB__CWD__/order_entry/pwhs_&vrs
+DEFINE vscript = /opt/DMSTEX_dev/db-sample-schemas//order_entry/pwhs_&vrs
 @&vscript
 
-DEFINE vscript = __SUB__CWD__/order_entry/pcus_&vrs
+DEFINE vscript = /opt/DMSTEX_dev/db-sample-schemas//order_entry/pcus_&vrs
 @&vscript
 
-DEFINE vscript = __SUB__CWD__/order_entry/pord_&vrs
+DEFINE vscript = /opt/DMSTEX_dev/db-sample-schemas//order_entry/pord_&vrs
 @&vscript
 
-@__SUB__CWD__/order_entry/oe_p_itm
+@/opt/DMSTEX_dev/db-sample-schemas//order_entry/oe_p_itm
 
-@__SUB__CWD__/order_entry/oe_p_inv
+@/opt/DMSTEX_dev/db-sample-schemas//order_entry/oe_p_inv
 
 PROMPT Setting FEEDBACK ON
 PROMPT
@@ -104,7 +104,7 @@ ALTER TABLE customers
 ALTER SESSION SET NLS_LANGUAGE=AMERICAN;
 ALTER SESSION SET NLS_TERRITORY=AMERICA;
 
-SET FEEDBACK OFF
+--SET FEEDBACK OFF
 
 UPDATE customers c
 SET

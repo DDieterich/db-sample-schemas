@@ -76,19 +76,22 @@ END;
 / 
 
 CONNECT OE/&pass_oe@&connect_string
+set serveroutput on size unlimited format wrapped
 
 --Create Oracle directory object
 DROP DIRECTORY SS_OE_XMLDIR
 /
-CREATE DIRECTORY SS_OE_XMLDIR as '__SUB__CWD__/order_entry/'
+CREATE DIRECTORY SS_OE_XMLDIR as '/opt/DMSTEX_dev/db-sample-schemas//order_entry/'
 /
 COMMIT
 /
 
 CONNECT sys/&&pass_sys@&connect_string AS SYSDBA;
+set serveroutput on size unlimited format wrapped
  
 revoke execute on directory SS_OE_XMLDIR from OE
 /
 CONNECT OE/&pass_oe@&connect_string
+set serveroutput on size unlimited format wrapped
 
 
